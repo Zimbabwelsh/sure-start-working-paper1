@@ -25,7 +25,7 @@ dir.create(out_folder)
 
 # data --------------------------------------------------------------------
 sure_start_2008_df <- 
-  'manual checks/national archive to nimdm wards (checked).csv' %>% read_csv()
+  'data/national archive to nimdm wards (checked).csv' %>% read_csv()
 
 sure_start_2017_df <-
   read_csv('outputs/cleaned ssni coverage (2017).csv')
@@ -117,7 +117,7 @@ analysis_df <-
 analysis_df
 
 ## basic checks and checks the ITT on treated -------------------------------
-source('protocol notes/source RDD checks.R')
+source('source RDD checks.R')
 
 ## Can check sample size here 
 treated_plot_df
@@ -126,7 +126,7 @@ treated_plot_df
 ## RDD needed ----------------------------------------------------------
 
 names(analysis_df)
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 rdd_df %>% filter(Bandwidth %>% between(-5, 5)) # get rid of spurious 
 
 
@@ -162,7 +162,7 @@ analysis_df <-
   )
 
 analysis_df
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 ## Effect on child central extracts 
 # 9 child_denExtract_ratio     0.866          600   -0.375     0.133    -2.83   0.0047 LATE     
 # 10 child_denExtract_ratio     0.433          367   -0.312     0.180    -1.74   0.0819 Half-BW  
@@ -180,7 +180,7 @@ analysis_df <-
   )
 
 analysis_df
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 ## effects 
 # 6 neet_prop               0.313           53    1.29      0.471     2.73   0.0062 LATE     
 # 9 noHE_prop               0.553           56    0.993     0.397     2.50   0.0124 LATE     
@@ -190,27 +190,5 @@ source('protocol notes/source RDD estimates.R')
 ### very few obs above this cut off 
 
 
-
-# check 5% ----------------------------------------------------------------
-check_NESTA <- 
-  nimdm2010_df %>% left_join(indicators_2017_df)
-
-check_NESTA <- 
-  check_NESTA %>%
-  mutate(
-    nimdm_percentile = k_nimdm2010 %>% percent_rank(), # high = deprived
-    nimdm_percent_group = cut(nimdm_percentile, 20)
-  )
-
-check_NESTA %>% names
-check_NESTA %>%
-  filter(
-    nimdm_percentile %>% between(0.7, 0.8)
-  ) %>%
-  group_by(nimdm_percent_group) %>%
-  summarise(
-    no5gcsr_prop = no5gcsr_prop %>% mean(),
-    n = n()
-    )
 
 

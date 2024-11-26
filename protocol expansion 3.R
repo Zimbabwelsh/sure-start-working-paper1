@@ -211,7 +211,7 @@ analysis_df <-
 
 
 ## basic checks and checks the ITT on treated -------------------------------
-source('protocol notes/source RDD checks.R')
+source('source RDD checks.R')
 
 ## Can check sample size here 
 treated_plot_df
@@ -220,7 +220,7 @@ k_histPlot
 ## RDD needed ----------------------------------------------------------
 
 names(analysis_df)
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 rdd_df
 
 # Quick glance at sig results?                                                                                           
@@ -251,7 +251,7 @@ analysis_df <-
   )
 
 analysis_df
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 ## Nothing at the standard p values
 # 9 sen_prop_postprim     0.789          483   -0.247      0.134   -1.83   0.0666 LATE   
 

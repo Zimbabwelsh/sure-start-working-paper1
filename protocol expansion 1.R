@@ -27,7 +27,7 @@ dir.create(out_folder)
 nimdm2005_ward <- 
   read_csv('outputs/cleaned nimdm 2005 scores (wards).csv')
 sure_start_2008 <- 
-  'manual checks/national archive to nimdm wards (checked).csv' %>% read_csv()
+  'data/national archive to nimdm wards (checked).csv' %>% read_csv()
 
 
 
@@ -58,7 +58,7 @@ analysis_df <-
 ## Run RDD checks 
 
 ## basic checks and checks the ITT on treated
-source('protocol notes/source RDD checks.R')
+source('source RDD checks.R')
 
 ## Can check sample size here 
 k_histPlot
@@ -108,7 +108,7 @@ analysis_df <-
 ## RDD needed ----------------------------------------------------------
 
 names(analysis_df)
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 rdd_df
 
 
@@ -141,7 +141,7 @@ analysis_df <-
   )
 
 analysis_df
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 ## nothing
 
 analysis_nm = 'expansion 1 (non-cut-off above)'
@@ -156,7 +156,7 @@ analysis_df <-
   )
 
 analysis_df
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 ## nothing
 
 
@@ -173,5 +173,5 @@ analysis_df <-
 
 analysis_nm = 'expansion 1 (wards only)'
 
-source('protocol notes/source RDD estimates.R')
+source('source RDD estimates.R')
 rdd_df
