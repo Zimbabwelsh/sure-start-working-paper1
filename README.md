@@ -20,8 +20,11 @@ Raw data is kept in the `data` folder. Processed and cleaned data for analysis i
 
 - NIMDM 2017 (SOA): https://www.nisra.gov.uk/publications/nimdm17-soa-level-results
 
+- SureStart coverage 2006 (source: Statement by Secretary of State for Northern Ireland on 9 May 2006 in UK parliament). This information was recorded in the Hansard [here](https://publications.parliament.uk/pa/cm200506/cmhansrd/vo060509/text/60509w0017.htm#0605109001518). This data is cleaned and available here: https://github.com/sure-start-ni-evaluation/surestart-ni-hansard
+
 - Sure Start coverage 2009 (source: former Sure Start website archived by National Archives, click on partnership links): https://webarchive.nationalarchives.gov.uk/ukgwa/20090325095035/http://www.surestart.gov.uk/aboutsurestart/help/contacts/northernireland/
 This data is available on GitHub along with code preparation code: https://github.com/MengLeZhang/sure-start-historical-website
+
 
 
 ## Non-open data

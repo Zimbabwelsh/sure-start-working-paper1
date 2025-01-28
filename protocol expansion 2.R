@@ -43,6 +43,11 @@ soa_ward_lookup_df <-
   'outputs/soa (2001) to ward (1992) lookup.csv' %>%
   read_csv
 
+hansard_2006 <-
+  'data/sure start coverage (hansard 2006) (checked).csv' %>%
+  read_csv
+
+
 # Create the eligible sample ----------------------------------------------
 
 
@@ -56,6 +61,20 @@ nimdm2005_df_soa <-
 exclude_nimdm2005_df <-
   nimdm2005_df_soa %>%
   filter(k_nimdm2005 >= 0)
+
+##ward in the hansard list into SOA -------------------------------------
+hansard_2006 %>% arrange(hansard_2006_coverage) ## those under 10% are clearly outreach
+
+legacy_df <- 
+  hansard_2006 #%>%
+#  filter(hansard_2006_coverage > 10) # 105 legacy wards
+
+exclude_hansard_soa_df <-
+  nimdm2005_df_soa %>%
+  filter(ward_code %in% legacy_df$bestCode)
+  
+
+
 
 ## Convert 2009 list to soa
 sure_start_2008_df_soa <-
@@ -100,8 +119,14 @@ analysis_df <-
 
 
 # eligible sample ---------------------------------------------------------
+
 analysis_df <-
   analysis_df %>%
+  # exclude 2006 legacy wards
+  filter(
+    !(soa_code %in% exclude_hansard_soa_df$soa_code)
+  ) %>%
+## Exclude 20% most deprived NIMDM
   filter(
     !(soa_code %in% exclude_nimdm2005_df$soa_code)
   )
@@ -130,22 +155,26 @@ source('source RDD estimates.R')
 rdd_df %>% filter(Bandwidth %>% between(-5, 5)) # get rid of spurious 
 
 
-# Quick glance at sig results?
-# outcome        Bandwidth Observations Estimate Std..Error z.value Pr...z.. bw_type  
-# <chr>              <dbl>        <dbl>    <dbl>      <dbl>   <dbl>    <dbl> <chr>    
-# 10 in_ss_2021         1.15           435   0.325      0.101     3.23   0.0013 LATE     
-# 11 in_ss_2021         0.574          191   0.294      0.144     2.05   0.0405 Half-BW  
-# 12 in_ss_2021         2.29           694   0.392      0.0748    5.23   0      Double-BW
-# 13 no5gcsr_prop       1.01           369   0.0635     0.0303    2.09   0.0364 LATE     
-# 14 no5gcsr_prop       0.506          167   0.0829     0.0378    2.19   0.0283 Half-BW  
-# 15 noHE_prop          1.25           472   0.048      0.0192    2.50   0.0124 LATE     
-# 16 noHE_prop          0.623          201   0.0536     0.0237    2.27   0.0234 Half-BW  
-# 17 noHE_prop          2.49           686   0.0388     0.0166    2.34   0.0193 Double-BW
-# 21 treated            1.39           542   0.488      0.093     5.25   0      LATE     
-# 22 treated            0.697          218   0.456      0.133     3.43   0.0006 Half-BW  
-# 23 treated            2.79           694   0.474      0.0777    6.10   0      Double-BW
+# Quick glance at sig results?                                                                
+#   # A tibble: 26 × 8
+#   outcome           Bandwidth Observations Estimate Std..Error z.value Pr...z.. bw_type  
+# <chr>                 <dbl>        <dbl>    <dbl>      <dbl>   <dbl>    <dbl> <chr>    
+# 5 in_ss_2017            0.942          272    0.545      0.129    4.22   0      LATE     
+# 6 in_ss_2017            0.471          119    0.437      0.185    2.36   0.0181 Half-BW  
+# 7 in_ss_2017            1.88           613    0.644      0.105    6.13   0      Double-BW
+# 8 in_ss_2021            0.814          218    0.307      0.138    2.23   0.0257 LATE     
+# 9 in_ss_2021            1.63           587    0.464      0.104    4.47   0      Double-BW
+# 10 abs_prop_prim         1.24           399    0.259      0.149    1.73   0.0829 LATE     
+# 11 abs_prop_prim         2.48           613    0.264      0.140    1.89   0.0581 Double-BW
+# 12 no5gcsr_prop          0.621          162    0.551      0.241    2.28   0.0225 LATE     
+# 13 no5gcsr_prop          0.310           77    0.598      0.308    1.94   0.0521 Half-BW  
+# 14 no5gcsr_prop          1.24           400    0.442      0.196    2.25   0.0243 Double-BW
+# 15 noHE_prop             0.954          278    0.552      0.181    3.05   0.0023 LATE     
+# 16 noHE_prop             0.477          119    0.530      0.235    2.26   0.0241 Half-BW  
+# 17 noHE_prop             1.91           609    0.487      0.153    3.19   0.0014 Double-BW
+# 21 phy_benefit_ratio     0.645          165    0.207      0.112    1.85   0.0638 LATE     
+# 22 phy_benefit_ratio     1.29           420    0.165      0.093    1.77   0.0766 Double-BW
 
-## Affects no GCSE and no HE-- otherwise strong effect on treated 
 
 # RDD by non-cut-offs -----------------------------------------------------
 bank_this <- analysis_df
@@ -163,10 +192,22 @@ analysis_df <-
 
 analysis_df
 source('source RDD estimates.R')
-## Effect on child central extracts 
-# 9 child_denExtract_ratio     0.866          600   -0.375     0.133    -2.83   0.0047 LATE     
-# 10 child_denExtract_ratio     0.433          367   -0.312     0.180    -1.74   0.0819 Half-BW  
-# 11 child_denExtract_ratio     1.73           631   -0.368     0.123    -2.98   0.0028 Double-BW
+
+# 8 no5gcsr_prop               0.788          521   -0.321     0.109    -2.95   0.0032 LATE    
+# 9 no5gcsr_prop               0.394          321   -0.391     0.146    -2.68   0.0074 Half-BW 
+# 10 no5gcsr_prop               1.58           569   -0.306     0.0987   -3.10   0.002  Double-…
+# 11 sen_prop_postprim          0.867          537   -0.214     0.122    -1.75   0.0797 LATE    
+# 12 sen_prop_postprim          1.73           569   -0.196     0.114    -1.72   0.0846 Double-…
+# 13 abs_prop_postprim          0.571          456   -0.261     0.110    -2.36   0.0181 LATE    
+# 14 abs_prop_postprim          0.286          237   -0.303     0.149    -2.03   0.0422 Half-BW 
+# 15 abs_prop_postprim          1.14           569   -0.324     0.0931   -3.48   0.0005 Double-…
+# 17 child_denExtract_ratio     0.655          492   -0.466     0.159    -2.93   0.0034 LATE    
+# 18 child_denExtract_ratio     0.327          264   -0.620     0.240    -2.58   0.0099 Half-BW 
+# 19 child_denExtract_ratio     1.31           569   -0.399     0.133    -3.01   0.0026 Double-…
+# 20 multiPrescrib_ratio        0.381          306    0.273     0.129     2.12   0.0341 LATE    
+# 21 multiPrescrib_ratio        0.190          157    0.517     0.170     3.04   0.0024 Half-BW 
+# 22 health_long_ratio          0.164          136    0.232     0.140     1.66   0.0965 Half-BW 
+
 
 analysis_nm = 'expansion 2 (non-cut-off above)'
 
@@ -182,13 +223,7 @@ analysis_df <-
 analysis_df
 source('source RDD estimates.R')
 ## effects 
-# 6 neet_prop               0.313           53    1.29      0.471     2.73   0.0062 LATE     
-# 9 noHE_prop               0.553           56    0.993     0.397     2.50   0.0124 LATE     
-# 12 loQual_prop             0.216           41    0.387     0.162     2.39   0.0167 LATE     
-# 14 phy_benefit_ratio       0.264           52    0.427     0.125     3.43   0.0006 LATE     
-# 17 multiPrescrib_ratio     0.398           55    0.588     0.337     1.75   0.0808 LATE     
-### very few obs above this cut off 
-
+# 5 noHE_prop            0.230            32   -0.700      0.420   -1.67   0.0954 LATE 
 
 
 

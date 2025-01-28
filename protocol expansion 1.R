@@ -26,10 +26,13 @@ dir.create(out_folder)
 
 nimdm2005_ward <- 
   read_csv('outputs/cleaned nimdm 2005 scores (wards).csv')
+
 sure_start_2008 <- 
   'data/national archive to nimdm wards (checked).csv' %>% read_csv()
 
-
+hansard_2006 <-
+  'data/sure start coverage (hansard 2006) (checked).csv' %>%
+  read_csv
 
 # QA ----------------------------------------------------------------------
 
@@ -52,6 +55,22 @@ analysis_df <-
     treated = ward_code %in% sure_start_2008$bestCode
   )
 
+## omit ward in the hansard list -------------------------------------
+hansard_2006$hansard_2006_coverage %>% 
+  hist()
+hansard_2006$hansard_2006_coverage %>% quantile()
+
+hansard_2006 %>% arrange(hansard_2006_coverage) ## those under 10% are clearly outreach
+
+legacy_df <- 
+  hansard_2006 #%>%
+  # filter(hansard_2006_coverage > 10) # 105 legacy wards
+
+analysis_df <-
+  analysis_df %>%
+  filter(
+    !(ward_code %in% legacy_df$bestCode)
+  )
 
 # source scripts ----------------------------------------------------------
 
@@ -90,12 +109,13 @@ soa_ward_lookup_df <-
 analysis_df <-
   soa_ward_lookup_df %>%
   left_join(analysis_df)
-  
+
 analysis_df <-
   analysis_df %>%
   group_by(soa_code) %>%
   summarise(
-    k = k %>% max
+    k = k %>% max,
+    treated = treated %>% mean
   )
 
 ## join indicators
@@ -112,19 +132,19 @@ source('source RDD estimates.R')
 rdd_df
 
 
-# Quick glance at sig results?
-#   # A tibble: 6 × 8
-#   outcome           Bandwidth Observations Estimate Std..Error z.value Pr...z.. bw_type  
-# <chr>                 <dbl>        <dbl>    <dbl>      <dbl>   <dbl>    <dbl> <chr>    
-# 1 abs_prop_prim         2.01           860  -0.0035     0.0019   -1.83   0.0679 LATE     
-# 2 abs_prop_prim         4.02           890  -0.0031     0.0018   -1.76   0.079  Double-BW
-# 3 noHE_prop             1.91           826  -0.0331     0.0176   -1.88   0.0603 LATE     
-# 4 noHE_prop             0.954          335  -0.0477     0.0238   -2.00   0.0452 Half-BW  
-# 5 noHE_prop             3.81           880  -0.0311     0.0146   -2.13   0.0332 Double-BW
-# 6 phy_benefit_ratio     3.48           890  -7.56       3.67     -2.06   0.0397 Double-BW
-
-## What was the treatment status by 2017?? 
-
+# Quick glance at sig results?                                                                
+#   # A tibble: 8 × 8
+#   outcome     Bandwidth Observations Estimate Std..Error z.value Pr...z.. bw_type  
+# <chr>           <dbl>        <dbl>    <dbl>      <dbl>   <dbl>    <dbl> <chr>    
+#   1 k            3837.             708    0         0      -Inf      0      LATE     
+# 2 k            1919.             708    0         0      -Inf      0      Half-BW  
+# 3 k            7674.             708    0         0      -Inf      0      Double-BW
+# 4 treated         1.36           432    0.462     0.108     4.28   0      LATE     
+# 5 treated         2.73           705    0.574     0.0797    7.20   0      Double-BW
+# 6 noHE_prop       0.877          220   -0.478     0.271    -1.76   0.0778 Half-BW  
+# 7 noHE_prop       3.51           702   -0.296     0.158    -1.87   0.0617 Double-BW
+# 8 loQual_prop     2.13           699   -0.210     0.119    -1.76   0.0789 Double-BW
+# There were 27 warnings (use warnings() to see them)
 
 # RDD by non-cut-offs -----------------------------------------------------
 bank_this <- analysis_df
