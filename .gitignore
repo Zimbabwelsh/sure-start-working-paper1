@@ -1,3 +1,22 @@
+ History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+.RDataTmp
+
+# User-specific files
+.Ruserdata
+
+# Example code in package build process
+*-Ex.R
+
+# RStudio files
+.Rproj.user/
 
 outputs/cleaned ssni coverage (2017).csv
 .Rproj.user
+
+# RStudio Connect folder
+rsconnect/
