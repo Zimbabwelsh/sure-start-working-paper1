@@ -68,7 +68,7 @@ mdmScore_df <-
 mdmScore_df %>% 
   rename(
     ward_name = Ward,
-    ward_code = Ward.Code
+    ward_code = `Ward Code`
     ) %>%
   select(ward_code, ward_name, mdm_rank_2005, mdm_score_2005, k_nimdm2005) %>%
   write_csv('outputs/cleaned nimdm 2005 scores (wards).csv')
