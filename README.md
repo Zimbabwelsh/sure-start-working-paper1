@@ -7,7 +7,7 @@ Data and code to used to produce the analysis used in the Sure Start protocol an
 1. Install R dependencies
 
 ```{r}
-install.packages(c("tidyverse", "rJava", "xlsx"))
+install.packages(c("tidyverse", "rJava", "xlsx", "rdd", "rddtools"))
 ```
 2. Run the code in the `makeFiles` folder to get cleaned version of the raw data (stored in `outputs`). 
 3. Files in the main folder with the prefix `protocol` do the analysis (saved in `outputs`). 
