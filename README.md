@@ -36,6 +36,6 @@ This data is available on GitHub along with code preparation code: https://githu
 
 One key dataset is not shared in this repo but described below:
 
-- Development of Sure Start Coverage Table.XLSX: This was sent by the NI Department of Education. Worksheet 1 contains their records of Sure Start areas and theri timing. Worksheet 2 is a cleaned and reformatted version which contains key variables:
+- Development of Sure Start Coverage Table.XLSX: This was sent by the NI Department of Education. Worksheet 1 contains their records of Sure Start areas and their timing. Worksheet 2 is a cleaned and reformatted version which contains key variables:
   - soa_nimd: name of SOA for linkage to imd
   - Phase.included: which phase a particular SOA was included
