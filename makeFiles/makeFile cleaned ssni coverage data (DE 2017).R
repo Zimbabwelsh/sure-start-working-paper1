@@ -2,17 +2,19 @@
 # notes reading in the data 
 
 library(tidyverse)
-library(rJava)
-library(xlsx)
 
 # input/ output -----------------------------------------------------------
 
 ## Sure Start data
 
+### GJG - this required an rJava dependency just for the single line of code, so
+### so I've replaced with readxl::read_xlsx, for ease of reproducibility
+
 ## The raw file from ni gov is in worksheet 1 and i reformatted 
 ssni_df <-
   'cleaned data/Development of Sure Start Coverage Table.XLSX' %>%
-  read.xlsx(2)
+  readxl::read_xlsx(2)
+
 
 nimdm2010_df <- 
   readxl::read_xls('data/NIMDM 2010 soa.xls', sheet = 2)
