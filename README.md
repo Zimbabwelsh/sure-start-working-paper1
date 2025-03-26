@@ -4,9 +4,14 @@ Data and code to used to produce the analysis used in the Sure Start protocol an
 
 # How to use 
 
-1. Run the code in the `makeFiles` folder to get cleaned version of the raw data (stored in `outputs`). 
-2. Files in the main folder with the prefix `protocol` do the analysis (saved in `ouputs`). 
-3. (optional) Files with the prefix `source` contain code for specific repetitive analysis tasks (e.g. make graphs, run models). 
+1. Install R dependencies
+
+```{r}
+install.packages(c("tidyverse", "rJava", "xlsx"))
+```
+2. Run the code in the `makeFiles` folder to get cleaned version of the raw data (stored in `outputs`). 
+3. Files in the main folder with the prefix `protocol` do the analysis (saved in `outputs`). 
+4. (optional) Files with the prefix `source` contain code for specific repetitive analysis tasks (e.g. make graphs, run models).
 
 # Data
 
